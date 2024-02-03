@@ -37,23 +37,10 @@ class LocalStorage implements Storage {
     await db.execute('''
     CREATE TABLE $_tasksTable (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
+    taskId String NOT NULL,
     description TEXT NOT NULL,
     isComplete INTEGER DEFAULT 0
     )
-    ''');
-
-    final _data = [
-      Task(description: 'Task 1'),
-      Task(description: 'Task 2'),
-      Task(
-          description:
-              'This is a longer task that requires you to wrap the text to a new line and to make sure that the visuals handle that correctly.'),
-      Task(description: 'Task 4'),
-    ];
-
-    return db.execute('''
-    INSERT INTO $_tasksTable (description, isComplete)
-    VALUES ("task 1", 0), ("task 2", 0), ("Task3", 1)
     ''');
   }
 
@@ -65,6 +52,8 @@ class LocalStorage implements Storage {
   @override
   Future<int> insertTask(String description) async {
     var newTask = Task(description: description);
+
+    print(newTask);
     _database.insert(_tasksTable, newTask.toJson());
     List<Task> list = [newTask];
     _streamController.add(list);
