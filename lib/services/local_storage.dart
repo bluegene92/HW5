@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:path/path.dart';
+import 'package:sqflite/sqlite_api.dart';
 import 'package:sqlbrite/sqlbrite.dart';
 
 import '../model/task.dart';
@@ -19,11 +20,11 @@ class LocalStorage implements Storage {
 
   @override
   Future<void> initialize() async {
-    final name = join(await getDatabasesPath(), 'todo.db');
-    // await deleteDatabase(name);
+    final dbPath = join(await getDatabasesPath(), 'todo.db');
+    await deleteDatabase(dbPath);
 
     final database = await openDatabase(
-      name,
+      dbPath,
       onCreate: _onCreate,
       version: 1,
     );
@@ -32,33 +33,35 @@ class LocalStorage implements Storage {
   }
 
   static Future<void> _onCreate(Database db, int version) async {
-    await deleteDatabase(_tasksTable);
-
-    await db.execute('''
-    CREATE TABLE $_tasksTable (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    taskId String NOT NULL,
-    description TEXT NOT NULL,
-    isComplete INTEGER DEFAULT 0
-    )
-    ''');
+    try {
+      await db.execute('''
+      CREATE TABLE $_tasksTable (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      taskId String NOT NULL,
+      description TEXT NOT NULL,
+      isCompleted INTEGER DEFAULT 0
+      )
+      ''');
+      print('create table successfully');
+    } catch (e) {
+      print('Unable to create table');
+    }
   }
 
   @override
   Stream<List<Task>> getTasks() {
-    return _database.createQuery(_tasksTable).mapToList((e) => Task());
+    return _database
+        .createQuery(_tasksTable)
+        .mapToList((e) => Task.fromJson(e));
   }
 
   @override
   Future<int> insertTask(String description) async {
     var newTask = Task(description: description);
 
-    print(newTask);
+    var taskJson = newTask.toJson();
+    print('add $taskJson');
     _database.insert(_tasksTable, newTask.toJson());
-    List<Task> list = [newTask];
-    _streamController.add(list);
-
-    print('add {newTask}');
     return Future.value(0);
   }
 

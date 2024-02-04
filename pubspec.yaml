@@ -36,7 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   uuid: ^4.3.3
   sqlbrite: ^2.6.0
-  sqflite: 2.2.4
+  sqflite: ^2.3.2
   path: ^1.8.3
 
 dev_dependencies:

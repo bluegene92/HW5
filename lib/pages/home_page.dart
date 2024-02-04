@@ -63,7 +63,7 @@ class _HomePageState extends State<HomePage> {
                               builder: (context) => const NewTaskPage()));
 
                       if (result != "" && result != null) {
-                        print('working');
+                        print('Trying to insert ${result}');
                         TaskController().insertTask(result);
                       }
                     },
