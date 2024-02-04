@@ -35,19 +35,38 @@ class _HomePageState extends State<HomePage> {
             stream: TaskController()
                 .getStream(), //since getStream is async, needs to wait for TaskController init first
             builder: ((context, snapshot) {
+              // if (!snapshot.hasData) {
+              //   return Scaffold(
+              //     appBar: AppBar(title: const Text('Todo')),
+              //     body: const CircularProgressIndicator(),
+              //   );
+              // }
+
               if (!snapshot.hasData) {
-                return Scaffold(
-                  appBar: AppBar(title: const Text('Todo')),
-                  body: const CircularProgressIndicator(),
-                );
+                print('no data');
               }
 
+              print("snapshotdata: $snapshot.data");
               final tasks = snapshot.data ?? [];
+
               return Scaffold(
                 appBar: AppBar(
                   title: const Text('Todo'),
                   backgroundColor: Colors.blue,
                   foregroundColor: Colors.white,
+                  actions: [
+                    IconButton(
+                        onPressed: () {
+                          print('Delete Completed Tasks');
+                          var deletedTasks = tasks.where((t) => t.isCompleted);
+
+                          for (var t in deletedTasks) {
+                            print(t.description);
+                            TaskController().removeTask(t);
+                          }
+                        },
+                        icon: const Icon(Icons.delete))
+                  ],
                 ),
                 body: ListView.separated(
                   itemBuilder: (_, index) => _toWidget(tasks[index]),
@@ -63,8 +82,8 @@ class _HomePageState extends State<HomePage> {
                               builder: (context) => const NewTaskPage()));
 
                       if (result != "" && result != null) {
-                        print('Trying to insert ${result}');
-                        TaskController().insertTask(result);
+                        var newTask = Task(description: result);
+                        await TaskController().insertTask(newTask);
                       }
                     },
                     child: const Icon(Icons.add, color: Colors.white)),
@@ -81,9 +100,7 @@ class _HomePageState extends State<HomePage> {
         title: Text(task.description),
         value: task.isCompleted,
         onChanged: (bool? value) {
-          setState(() {
-            task.isCompleted = value ?? false;
-          });
+          TaskController().updateTask(task);
         });
   }
 }

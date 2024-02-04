@@ -28,8 +28,8 @@ class CachedStorage implements Storage {
   }
 
   @override
-  Future<Task> insertTask(String description) {
-    final newTask = Task(description: description);
+  Future<Task> insertTask(Task task) {
+    final newTask = task;
     _data.add(newTask);
     streamController.add(_data);
     return Future.value(newTask);
@@ -46,4 +46,10 @@ class CachedStorage implements Storage {
 
   @override
   Future<void> initialize() => Future.value();
+
+  @override
+  Future<void> updateTask(Task task) {
+    // TODO: implement updateTask
+    throw UnimplementedError();
+  }
 }

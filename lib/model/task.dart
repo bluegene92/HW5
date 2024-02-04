@@ -2,25 +2,25 @@ import 'package:uuid/uuid.dart';
 
 class Task {
   static const _uuid = Uuid();
-  String taskId;
+  String id;
   String description;
   bool isCompleted;
 
   Task({this.description = ''})
       : isCompleted = false,
-        taskId = _uuid.v1();
+        id = _uuid.v1();
 
   Task.withComplete(
-      {this.taskId = '', this.description = '', this.isCompleted = false});
+      {this.id = '', this.description = '', this.isCompleted = false});
 
   factory Task.fromJson(Map<String, Object?> json) => Task.withComplete(
-      taskId: json['taskId'] as String,
+      id: json['id'] as String,
       description: json['description'] as String,
-      isCompleted: json['isCompleted'] as bool);
+      isCompleted: (json['isCompleted'] == 1 ? true : false));
 
   Map<String, dynamic> toJson() {
     return {
-      'taskId': taskId,
+      'id': id,
       'description': description,
       'isCompleted': isCompleted ? 1 : 0
     };
