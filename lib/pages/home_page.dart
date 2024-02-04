@@ -57,13 +57,8 @@ class _HomePageState extends State<HomePage> {
                   actions: [
                     IconButton(
                         onPressed: () {
-                          print('Delete Completed Tasks');
-                          var deletedTasks = tasks.where((t) => t.isCompleted);
-
-                          for (var t in deletedTasks) {
-                            print(t.description);
-                            TaskController().removeTask(t);
-                          }
+                          tasks.where((t) => t.isCompleted).forEach(
+                              (task) => TaskController().removeTask(task));
                         },
                         icon: const Icon(Icons.delete))
                   ],
