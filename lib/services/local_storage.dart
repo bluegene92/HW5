@@ -18,7 +18,7 @@ class LocalStorage implements Storage {
   @override
   Future<void> initialize() async {
     final name = join(await getDatabasesPath(), 'todo.db');
-    //await deleteDatabase(name);
+    await deleteDatabase(name);
 
     final database = await openDatabase(
       name,
@@ -35,13 +35,14 @@ CREATE TABLE $_tasksTable (
   task_id INTEGER PRIMARY KEY AUTOINCREMENT,
   id TEXT NOT NULL,
   description TEXT NOT NULL,
-  isCompleted INTEGER NOT NULL DEFAULT 0
+  isCompleted INTEGER NOT NULL DEFAULT 0,
+  dueDateTimeStamp INTEGER NULL
 );
 ''');
 
     return db.execute(''' 
-  INSERT INTO $_tasksTable (id, description, isCompleted)
-  VALUES ("FAKEUIDID", "Testing 123", 0)
+  INSERT INTO $_tasksTable (id, description, isCompleted, dueDateTimeStamp)
+  VALUES ("FAKEUIDID", "Testing 123", 0, NULL)
   ''');
   }
 

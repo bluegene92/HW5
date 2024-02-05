@@ -9,11 +9,31 @@ class NewTaskPage extends StatefulWidget {
 
 class _NewTaskPageState extends State<NewTaskPage> {
   final textFieldController = TextEditingController();
+  DateTime _selectedDate = DateTime.now();
+
+  String _selectedDateText = "Selected Due Date";
 
   @override
   void dispose() {
     textFieldController.dispose();
     super.dispose();
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? pickDate = await showDatePicker(
+        context: context, firstDate: DateTime(2000), lastDate: DateTime(2101));
+
+    if (pickDate != null && pickDate != _selectedDate) {
+      setState(() {
+        _selectedDate = pickDate;
+
+        String day = pickDate.day.toString();
+        String month = pickDate.month.toString().padLeft(2, '0');
+        String year = pickDate.year.toString();
+
+        _selectedDateText = "$month/$day/$year";
+      });
+    }
   }
 
   //wrap the Scaffold in
@@ -29,6 +49,11 @@ class _NewTaskPageState extends State<NewTaskPage> {
           const SizedBox(height: 10),
           const Text('New Task'),
           TextField(controller: textFieldController),
+          ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue, foregroundColor: Colors.white),
+              onPressed: () => _selectDate(context),
+              child: Text(_selectedDateText)),
           const SizedBox(height: 5),
           FloatingActionButton(
               backgroundColor: Colors.blue,
