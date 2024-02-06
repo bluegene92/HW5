@@ -76,8 +76,11 @@ class _HomePageState extends State<HomePage> {
                           MaterialPageRoute(
                               builder: (context) => const NewTaskPage()));
 
-                      if (result != "" && result != null) {
-                        var newTask = Task(description: result);
+                      if (result[0] != "" && result[0] != null) {
+                        var newTask = Task(description: result[0]);
+                        if (result[1] != null) {
+                          newTask.dueDate = result[1];
+                        }
                         await TaskController().insertTask(newTask);
                       }
                     },
@@ -89,10 +92,22 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _toWidget(Task task) {
+    Widget? dueDate;
+
+    if (task.dueDate != null) {
+      String? day = task.dueDate?.day.toString();
+      String? month = task.dueDate?.month.toString();
+      String? year = task.dueDate?.year.toString();
+      dueDate = Text("$month/$day/$year");
+    }
+
+    print("DueDate ${task.dueDate}");
+
     return CheckboxListTile(
         checkColor: Colors.white,
         activeColor: Colors.blue,
         title: Text(task.description),
+        subtitle: dueDate,
         value: task.isCompleted,
         onChanged: (bool? value) {
           TaskController().updateTask(task);

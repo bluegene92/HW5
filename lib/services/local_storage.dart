@@ -36,7 +36,7 @@ CREATE TABLE $_tasksTable (
   id TEXT NOT NULL,
   description TEXT NOT NULL,
   isCompleted INTEGER NOT NULL DEFAULT 0,
-  dueDateTimeStamp INTEGER NULL
+  dueDateTimeStamp TEXT NULL
 );
 ''');
 

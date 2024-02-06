@@ -19,33 +19,32 @@ class Task {
 
   //
   factory Task.fromJson(Map<String, Object?> json) {
-    int? dueDateTimeStamp;
-    if (json['dueDateTimeStamp'] != null) {
-      dueDateTimeStamp = json['dueDateTimeStamp'] as int;
-    }
+    DateTime? dueDate;
 
-    //convert seconds to milliseconds, then to DateTime
-    // DateTime dueDate =
-    //     DateTime.fromMillisecondsSinceEpoch(dueDateTimeStamp * 1000);
+    if (json['dueDateTimeStamp'] != null) {
+      dueDate = DateTime.parse(json['dueDateTimeStamp'] as String);
+    }
 
     return Task.toObject(
         id: json['id'] as String,
         description: json['description'] as String,
-        isCompleted: (json['isCompleted'] == 1 ? true : false),
-        dueDate: dueDateTimeStamp != null ? DateTime.now() : null);
+        isCompleted: json['isCompleted'] == 0 ? false : true,
+        dueDate: dueDate);
   }
 
+  //map model to json before insert to DB
   Map<String, dynamic> toJson() {
-    // int? dueDateInSeconds;
+    String? dueDateAsString;
 
-    // if (dueDate != null) {
-    //   dueDateInSeconds = dueDate?.millisecondsSinceEpoch ?? 0 ~/ 1000;
-    // }
+    if (dueDate != null) {
+      dueDateAsString = dueDate?.toIso8601String();
+    }
 
     return {
       'id': id,
       'description': description,
       'isCompleted': isCompleted ? 1 : 0,
+      'dueDateTimeStamp': dueDateAsString
     };
   }
 }

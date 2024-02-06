@@ -8,14 +8,13 @@ class NewTaskPage extends StatefulWidget {
 }
 
 class _NewTaskPageState extends State<NewTaskPage> {
-  final textFieldController = TextEditingController();
-  DateTime _selectedDate = DateTime.now();
-
+  final _textFieldController = TextEditingController();
+  DateTime? _selectedDate;
   String _selectedDateText = "Selected Due Date";
 
   @override
   void dispose() {
-    textFieldController.dispose();
+    _textFieldController.dispose();
     super.dispose();
   }
 
@@ -48,7 +47,7 @@ class _NewTaskPageState extends State<NewTaskPage> {
         children: [
           const SizedBox(height: 10),
           const Text('New Task'),
-          TextField(controller: textFieldController),
+          TextField(controller: _textFieldController),
           ElevatedButton(
               style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue, foregroundColor: Colors.white),
@@ -61,7 +60,8 @@ class _NewTaskPageState extends State<NewTaskPage> {
               child: const Text('Save'),
               onPressed: () {
                 //on save, update the storage/model
-                Navigator.pop(context, textFieldController.text);
+                Navigator.pop(
+                    context, [_textFieldController.text, _selectedDate]);
               })
         ],
       ),
