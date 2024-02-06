@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hw4/pages/new_task_page.dart';
+import 'package:intl/intl.dart';
 import '../controllers/task_controller.dart';
 import '../model/task.dart';
 
@@ -92,11 +93,7 @@ class _HomePageState extends State<HomePage> {
     DateTime yesterday = DateTime.now().subtract(const Duration(days: 1));
 
     if (task.dueDate != null) {
-      String? day = task.dueDate?.day.toString();
-      String? month = task.dueDate?.month.toString();
-      String? year = task.dueDate?.year.toString();
-
-      dueDate = Text("$month/$day/$year",
+      dueDate = Text(DateFormat("M/d/yyyy").format(task.dueDate!),
           style: TextStyle(
               color: task.dueDate!.isBefore(yesterday)
                   ? Colors.red

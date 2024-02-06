@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class NewTaskPage extends StatefulWidget {
   const NewTaskPage({Key? key}) : super(key: key);
@@ -10,7 +11,6 @@ class NewTaskPage extends StatefulWidget {
 class _NewTaskPageState extends State<NewTaskPage> {
   final _textFieldController = TextEditingController();
   DateTime? _selectedDate;
-  String _selectedDateText = "Selected Due Date";
 
   @override
   void dispose() {
@@ -19,20 +19,16 @@ class _NewTaskPageState extends State<NewTaskPage> {
   }
 
   Future<void> _selectDate(BuildContext context) async {
+    var today = DateTime.now();
     final DateTime? pickDate = await showDatePicker(
-        context: context, firstDate: DateTime(2000), lastDate: DateTime(2101));
+        context: context,
+        initialDate: today.add(const Duration(days: 3)),
+        firstDate: today.add(const Duration(days: -1)),
+        lastDate: today.add(const Duration(days: 1000)));
 
-    if (pickDate != null && pickDate != _selectedDate) {
-      setState(() {
-        _selectedDate = pickDate;
-
-        String day = pickDate.day.toString();
-        String month = pickDate.month.toString();
-        String year = pickDate.year.toString();
-
-        _selectedDateText = "$month/$day/$year";
-      });
-    }
+    setState(() {
+      _selectedDate = pickDate;
+    });
   }
 
   //wrap the Scaffold in
@@ -52,7 +48,9 @@ class _NewTaskPageState extends State<NewTaskPage> {
               style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue, foregroundColor: Colors.white),
               onPressed: () => _selectDate(context),
-              child: Text(_selectedDateText)),
+              child: Text(_selectedDate == null
+                  ? "Select Due Date"
+                  : DateFormat("M/d/yyyy").format(_selectedDate!))),
           const SizedBox(height: 5),
           FloatingActionButton(
               backgroundColor: Colors.blue,

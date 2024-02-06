@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'pages/home_page.dart';
 
-// Estimate Completion time: 3 Hours
-// Actual Completition time: 3 Hours
-
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
