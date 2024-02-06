@@ -110,6 +110,7 @@ class _HomePageState extends State<HomePage> {
         subtitle: dueDate,
         value: task.isCompleted,
         onChanged: (bool? value) {
+          task.isCompleted = !task.isCompleted;
           TaskController().updateTask(task);
         });
   }

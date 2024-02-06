@@ -68,7 +68,6 @@ CREATE TABLE $_tasksTable (
 
   @override
   Future<int> updateTask(Task task) async {
-    task.isCompleted = !task.isCompleted;
     await _database.update(_tasksTable, task.toJson(),
         where: 'id = ?', whereArgs: [task.id]);
 
