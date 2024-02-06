@@ -11,7 +11,7 @@ import '../model/task.dart';
 //         Due: Feb 15, 2024
 
 // Estimate Completion time: 4 Hours
-// Actual Completition time: 3 Hours
+// Actual Completition time: 6 Hours
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -35,33 +35,31 @@ class _HomePageState extends State<HomePage> {
             stream: TaskController()
                 .getStream(), //since getStream is async, needs to wait for TaskController init first
             builder: ((context, snapshot) {
-              // if (!snapshot.hasData) {
-              //   return Scaffold(
-              //     appBar: AppBar(title: const Text('Todo')),
-              //     body: const CircularProgressIndicator(),
-              //   );
-              // }
-
               if (!snapshot.hasData) {
-                print('no data');
+                return Scaffold(
+                  appBar: AppBar(title: const Text('Todo')),
+                  body: const CircularProgressIndicator(),
+                );
               }
 
-              print("snapshotdata: $snapshot.data");
               final tasks = snapshot.data ?? [];
+              List<Widget> actions = [];
+              if (tasks.any((task) => task.isCompleted)) {
+                actions.add(IconButton(
+                    onPressed: () {
+                      tasks
+                          .where((t) => t.isCompleted)
+                          .forEach((task) => TaskController().removeTask(task));
+                    },
+                    icon: const Icon(Icons.delete)));
+              }
 
               return Scaffold(
                 appBar: AppBar(
                   title: const Text('Todo'),
                   backgroundColor: Colors.blue,
                   foregroundColor: Colors.white,
-                  actions: [
-                    IconButton(
-                        onPressed: () {
-                          tasks.where((t) => t.isCompleted).forEach(
-                              (task) => TaskController().removeTask(task));
-                        },
-                        icon: const Icon(Icons.delete))
-                  ],
+                  actions: actions,
                 ),
                 body: ListView.separated(
                   itemBuilder: (_, index) => _toWidget(tasks[index]),
@@ -71,18 +69,16 @@ class _HomePageState extends State<HomePage> {
                 floatingActionButton: FloatingActionButton(
                     backgroundColor: Colors.blue,
                     onPressed: () async {
-                      final result = await Navigator.push(
+                      NewTaskPageResult result = await Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => const NewTaskPage()));
 
-                      if (result[0] != "" && result[0] != null) {
-                        var newTask = Task(description: result[0]);
-                        if (result[1] != null) {
-                          newTask.dueDate = result[1];
-                        }
-                        await TaskController().insertTask(newTask);
-                      }
+                      if (result.text?.trim().isEmpty ?? true) return;
+
+                      var newTask = Task(
+                          description: result.text!, dueDate: result.dueDate);
+                      await TaskController().insertTask(newTask);
                     },
                     child: const Icon(Icons.add, color: Colors.white)),
               );
@@ -93,15 +89,19 @@ class _HomePageState extends State<HomePage> {
 
   Widget _toWidget(Task task) {
     Widget? dueDate;
+    DateTime yesterday = DateTime.now().subtract(const Duration(days: 1));
 
     if (task.dueDate != null) {
       String? day = task.dueDate?.day.toString();
       String? month = task.dueDate?.month.toString();
       String? year = task.dueDate?.year.toString();
-      dueDate = Text("$month/$day/$year");
-    }
 
-    print("DueDate ${task.dueDate}");
+      dueDate = Text("$month/$day/$year",
+          style: TextStyle(
+              color: task.dueDate!.isBefore(yesterday)
+                  ? Colors.red
+                  : Colors.black));
+    }
 
     return CheckboxListTile(
         checkColor: Colors.white,

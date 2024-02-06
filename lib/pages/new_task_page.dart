@@ -27,7 +27,7 @@ class _NewTaskPageState extends State<NewTaskPage> {
         _selectedDate = pickDate;
 
         String day = pickDate.day.toString();
-        String month = pickDate.month.toString().padLeft(2, '0');
+        String month = pickDate.month.toString();
         String year = pickDate.year.toString();
 
         _selectedDateText = "$month/$day/$year";
@@ -59,12 +59,20 @@ class _NewTaskPageState extends State<NewTaskPage> {
               foregroundColor: Colors.white,
               child: const Text('Save'),
               onPressed: () {
+                NewTaskPageResult result =
+                    NewTaskPageResult(_textFieldController.text, _selectedDate);
                 //on save, update the storage/model
-                Navigator.pop(
-                    context, [_textFieldController.text, _selectedDate]);
+                Navigator.pop(context, result);
               })
         ],
       ),
     );
   }
+}
+
+class NewTaskPageResult {
+  String? text = "";
+  DateTime? dueDate;
+
+  NewTaskPageResult(this.text, this.dueDate);
 }
