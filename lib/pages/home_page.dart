@@ -11,8 +11,8 @@ import '../model/task.dart';
 //      Points: 100 pts
 //         Due: Feb 15, 2024
 
-// Estimate Completion time: 3 Hours
-// Actual Completition time: 6 Hours
+// Estimate Completion time: 4 Hours
+// Actual Completition time: 8 Hours
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
