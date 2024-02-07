@@ -11,7 +11,7 @@ import '../model/task.dart';
 //      Points: 100 pts
 //         Due: Feb 15, 2024
 
-// Estimate Completion time: 4 Hours
+// Estimate Completion time: 3 Hours
 // Actual Completition time: 6 Hours
 
 class HomePage extends StatefulWidget {
@@ -113,8 +113,4 @@ class _HomePageState extends State<HomePage> {
           });
         });
   }
-}
-
-Future<void> createController() async {
-  await TaskController().initialize();
 }
