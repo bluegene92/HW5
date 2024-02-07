@@ -5,6 +5,5 @@ abstract class Storage {
 
   Stream<List<Task>> getTasks();
   Future<void> insertTask(Task task);
-  Future<void> updateTask(Task task);
   Future<void> removeTask(Task task);
 }

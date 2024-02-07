@@ -23,7 +23,7 @@ class _NewTaskPageState extends State<NewTaskPage> {
     final DateTime? pickDate = await showDatePicker(
         context: context,
         initialDate: today.add(const Duration(days: 3)),
-        firstDate: today.add(const Duration(days: -1)),
+        firstDate: today,
         lastDate: today.add(const Duration(days: 1000)));
 
     setState(() {

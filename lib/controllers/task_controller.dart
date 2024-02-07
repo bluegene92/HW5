@@ -15,8 +15,6 @@ class TaskController {
 
   Future<void> insertTask(Task task) => _localStorage.insertTask(task);
 
-  Future<void> updateTask(Task task) => _localStorage.updateTask(task);
-
   Future<void> removeTask(Task task) => _localStorage.removeTask(task);
 
   Future<void> initialize() => _localStorage.initialize();

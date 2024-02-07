@@ -35,14 +35,13 @@ CREATE TABLE $_tasksTable (
   task_id INTEGER PRIMARY KEY AUTOINCREMENT,
   id TEXT NOT NULL,
   description TEXT NOT NULL,
-  isCompleted INTEGER NOT NULL DEFAULT 0,
   dueDateTimeStamp TEXT NULL
 );
 ''');
 
     return db.execute(''' 
-  INSERT INTO $_tasksTable (id, description, isCompleted, dueDateTimeStamp)
-  VALUES ("FAKEUIDID", "Testing 123", 0, NULL)
+  INSERT INTO $_tasksTable (id, description, dueDateTimeStamp)
+  VALUES ("FAKEUIDID", "Testing 123", NULL)
   ''');
   }
 
@@ -55,22 +54,11 @@ CREATE TABLE $_tasksTable (
 
   @override
   Future<int> insertTask(Task task) async {
-    await _database.insert(_tasksTable, task.toJson(),
-        conflictAlgorithm: ConflictAlgorithm.replace);
-    return Future.value(0);
+    return _database.insert(_tasksTable, task.toJson());
   }
 
   @override
   Future<int> removeTask(Task task) async {
-    await _database.delete(_tasksTable, where: 'id = ?', whereArgs: [task.id]);
-    return Future.value(0);
-  }
-
-  @override
-  Future<int> updateTask(Task task) async {
-    await _database.update(_tasksTable, task.toJson(),
-        where: 'id = ?', whereArgs: [task.id]);
-
-    return Future.value(0);
+    return _database.delete(_tasksTable, where: 'id = ?', whereArgs: [task.id]);
   }
 }

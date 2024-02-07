@@ -27,7 +27,6 @@ class Task {
     return Task.toObject(
         id: json['id'] as String,
         description: json['description'] as String,
-        isCompleted: json['isCompleted'] == 0 ? false : true,
         dueDate: dueDate);
   }
 
@@ -42,7 +41,6 @@ class Task {
     return {
       'id': id,
       'description': description,
-      'isCompleted': isCompleted ? 1 : 0,
       'dueDateTimeStamp': dueDateAsString
     };
   }

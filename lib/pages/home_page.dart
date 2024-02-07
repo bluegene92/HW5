@@ -22,70 +22,71 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  Future<void> _initTaskController() async {
-    await TaskController().initialize();
-  }
+  var loaded = false;
+  var tasks = [];
 
   @override
   Widget build(BuildContext context) {
-    //need to wrap in futurebuilder to initalize async TaskController....
-    return FutureBuilder<void>(
-        future: _initTaskController(),
-        builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
-          return StreamBuilder<List<Task>>(
-            stream: TaskController()
-                .getStream(), //since getStream is async, needs to wait for TaskController init first
-            builder: ((context, snapshot) {
-              if (!snapshot.hasData) {
-                return Scaffold(
-                  appBar: AppBar(title: const Text('Todo')),
-                  body: const CircularProgressIndicator(),
-                );
-              }
-
-              final tasks = snapshot.data ?? [];
-              List<Widget> actions = [];
-              if (tasks.any((task) => task.isCompleted)) {
-                actions.add(IconButton(
-                    onPressed: () {
-                      tasks
-                          .where((t) => t.isCompleted)
-                          .forEach((task) => TaskController().removeTask(task));
-                    },
-                    icon: const Icon(Icons.delete)));
-              }
-
-              return Scaffold(
-                appBar: AppBar(
-                  title: const Text('Todo'),
-                  backgroundColor: Colors.blue,
-                  foregroundColor: Colors.white,
-                  actions: actions,
-                ),
-                body: ListView.separated(
-                  itemBuilder: (_, index) => _toWidget(tasks[index]),
-                  separatorBuilder: (_, __) => const Divider(),
-                  itemCount: tasks.length,
-                ),
-                floatingActionButton: FloatingActionButton(
-                    backgroundColor: Colors.blue,
-                    onPressed: () async {
-                      NewTaskPageResult result = await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const NewTaskPage()));
-
-                      if (result.text?.trim().isEmpty ?? true) return;
-
-                      var newTask = Task(
-                          description: result.text!, dueDate: result.dueDate);
-                      await TaskController().insertTask(newTask);
-                    },
-                    child: const Icon(Icons.add, color: Colors.white)),
-              );
-            }),
+    return StreamBuilder<List<Task>>(
+      stream: TaskController()
+          .getStream(), //since getStream is async, needs to wait for TaskController init first
+      builder: ((context, snapshot) {
+        if (!snapshot.hasData) {
+          return Scaffold(
+            appBar: AppBar(title: const Text('Todo')),
+            body: const CircularProgressIndicator(),
           );
-        });
+        }
+
+        //separate local state from database state
+        if (!loaded) {
+          tasks = snapshot.data ?? [];
+          loaded = true;
+        }
+
+        List<Widget> actions = [];
+        if (tasks.any((task) => task.isCompleted)) {
+          actions.add(IconButton(
+              onPressed: () {
+                tasks
+                    .where((t) => t.isCompleted)
+                    .forEach((task) => TaskController().removeTask(task));
+                loaded = false; //allow to load data again
+              },
+              icon: const Icon(Icons.delete)));
+        }
+
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text('Todo'),
+            backgroundColor: Colors.blue,
+            foregroundColor: Colors.white,
+            actions: actions,
+          ),
+          body: ListView.separated(
+            itemBuilder: (_, index) => _toWidget(tasks[index]),
+            separatorBuilder: (_, __) => const Divider(),
+            itemCount: tasks.length,
+          ),
+          floatingActionButton: FloatingActionButton(
+              backgroundColor: Colors.blue,
+              onPressed: () async {
+                NewTaskPageResult result = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const NewTaskPage()));
+
+                if (result.text?.trim().isEmpty ?? true) return;
+
+                loaded = false; //allow to load data again
+                var newTask =
+                    Task(description: result.text!, dueDate: result.dueDate);
+                await TaskController().insertTask(newTask);
+              },
+              child: const Icon(Icons.add, color: Colors.white)),
+        );
+      }),
+    );
   }
 
   Widget _toWidget(Task task) {
@@ -107,8 +108,9 @@ class _HomePageState extends State<HomePage> {
         subtitle: dueDate,
         value: task.isCompleted,
         onChanged: (bool? value) {
-          task.isCompleted = !task.isCompleted;
-          TaskController().updateTask(task);
+          setState(() {
+            task.isCompleted = value!;
+          });
         });
   }
 }

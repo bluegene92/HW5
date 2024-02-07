@@ -46,10 +46,4 @@ class CachedStorage implements Storage {
 
   @override
   Future<void> initialize() => Future.value();
-
-  @override
-  Future<void> updateTask(Task task) {
-    // TODO: implement updateTask
-    throw UnimplementedError();
-  }
 }
