@@ -6,13 +6,13 @@ import '../model/task.dart';
 
 //       Class: Mobile Application Development
 //        Name: Dat Tran
-//        Date: Feb 2, 2024
-//    Homework: Week 5
+//        Date: Feb 11, 2024
+//    Homework: Week 6
 //      Points: 100 pts
-//         Due: Feb 15, 2024
+//         Due: Feb 22, 2024
 
 // Estimate Completion time: 4 Hours
-// Actual Completition time: 8 Hours
+// Actual Completition time: 6 Hours
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
