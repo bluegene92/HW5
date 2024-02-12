@@ -20,8 +20,13 @@ class FirestoreStorage implements Storage {
         .map((snapshot) {
       return snapshot.docs.map((doc) {
         final data = doc.data();
-        print('data $data');
-        return Task(description: data['description']);
+        DateTime? dueDate;
+
+        if (data['dueDate'] != null) {
+          dueDate = data['dueDate'].toDate() as DateTime;
+        }
+
+        return Task(description: data['description'], dueDate: dueDate);
       }).toList();
     });
   }
