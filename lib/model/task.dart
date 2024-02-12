@@ -17,7 +17,7 @@ class Task {
       this.dueDate});
 
   //
-  factory Task.fromJson(Map<String, Object?> json) {
+  factory Task.fromJson(Map<String, dynamic> json) {
     DateTime? dueDate;
 
     if (json['dueDateTimeStamp'] != null) {

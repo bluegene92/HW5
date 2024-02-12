@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "676003706096",
+    "project_id": "mobileapp-hw6-2c905",
+    "storage_bucket": "mobileapp-hw6-2c905.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:676003706096:android:dc721f90b27d7df21cbe35",
+        "android_client_info": {
+          "package_name": "com.dattran.hw4"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBn3yTFv97PE3-3junRZFx5PCF0kMrwmb8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
