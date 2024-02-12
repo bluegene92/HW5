@@ -7,8 +7,11 @@ class Task {
   bool isCompleted;
   DateTime? dueDate;
 
-  Task({this.description = '', this.isCompleted = false, this.dueDate})
-      : id = _uuid.v1();
+  Task(
+      {this.id = '',
+      this.description = '',
+      this.isCompleted = false,
+      this.dueDate});
 
   Task.toObject(
       {this.id = '',

@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hw4/pages/new_task_page.dart';
 import 'package:intl/intl.dart';
@@ -48,10 +47,17 @@ class _HomePageState extends State<HomePage> {
         List<Widget> actions = [];
         if (tasks.any((task) => task.isCompleted)) {
           actions.add(IconButton(
-              onPressed: () {
-                tasks
-                    .where((t) => t.isCompleted)
-                    .forEach((task) => TaskController().removeTask(task));
+              onPressed: () async {
+                var tasksToBRemove = tasks.where((t) => t.isCompleted);
+
+                setState(() {
+                  tasks = tasks.where((t) => !t.isCompleted).toList();
+                });
+
+                for (var task in tasksToBRemove) {
+                  await TaskController().removeTask(task);
+                }
+
                 loaded = false; //allow to load data again
               },
               icon: const Icon(Icons.delete)));

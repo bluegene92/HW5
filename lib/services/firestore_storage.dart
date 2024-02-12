@@ -8,6 +8,7 @@ import 'storage.dart';
 class FirestoreStorage implements Storage {
   static const _tasks = 'tasks';
   static const _description = 'description';
+  static const _dueDate = 'dueDate';
 
   @override
   Future<void> initialize() => Future.value();
@@ -26,7 +27,10 @@ class FirestoreStorage implements Storage {
           dueDate = data['dueDate'].toDate() as DateTime;
         }
 
-        return Task(description: data['description'], dueDate: dueDate);
+        // print("data ${doc.id} ${data}");
+
+        return Task.toObject(
+            id: doc.id, description: data['description'], dueDate: dueDate);
       }).toList();
     });
   }
@@ -40,11 +44,11 @@ class FirestoreStorage implements Storage {
 
     return FirebaseFirestore.instance
         .collection(_tasks)
-        .add({'description': task.description, 'dueDate': dueDateTimeStamp});
+        .add({_description: task.description, _dueDate: dueDateTimeStamp});
   }
 
   @override
   Future<void> removeTask(Task task) {
-    return Future.value();
+    return FirebaseFirestore.instance.collection(_tasks).doc(task.id).delete();
   }
 }
