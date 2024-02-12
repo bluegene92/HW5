@@ -23,14 +23,14 @@ class FirestoreStorage implements Storage {
         final data = doc.data();
         DateTime? dueDate;
 
-        if (data['dueDate'] != null) {
-          dueDate = data['dueDate'].toDate() as DateTime;
+        if (data[_dueDate] != null) {
+          dueDate = data[_dueDate].toDate() as DateTime;
         }
 
         // print("data ${doc.id} ${data}");
 
-        return Task.toObject(
-            id: doc.id, description: data['description'], dueDate: dueDate);
+        return Task(
+            id: doc.id, description: data[_description], dueDate: dueDate);
       }).toList();
     });
   }

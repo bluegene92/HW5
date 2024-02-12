@@ -50,13 +50,13 @@ class _HomePageState extends State<HomePage> {
               onPressed: () async {
                 var tasksToBRemove = tasks.where((t) => t.isCompleted);
 
-                setState(() {
-                  tasks = tasks.where((t) => !t.isCompleted).toList();
-                });
-
                 for (var task in tasksToBRemove) {
                   await TaskController().removeTask(task);
                 }
+
+                setState(() {
+                  tasks = tasks.where((t) => !t.isCompleted).toList();
+                });
 
                 loaded = false; //allow to load data again
               },
@@ -98,12 +98,11 @@ class _HomePageState extends State<HomePage> {
 
   Widget _toWidget(Task task) {
     Widget? dueDate;
-    DateTime yesterday = DateTime.now().subtract(const Duration(days: 1));
 
     if (task.dueDate != null) {
       dueDate = Text(DateFormat("M/d/yyyy").format(task.dueDate!),
           style: TextStyle(
-              color: task.dueDate!.isBefore(yesterday)
+              color: task.dueDate!.compareTo(DateTime.now()) < 0
                   ? Colors.red
                   : Colors.black));
     }

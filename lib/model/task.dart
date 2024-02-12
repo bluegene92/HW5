@@ -1,7 +1,4 @@
-import 'package:uuid/uuid.dart';
-
 class Task {
-  static const _uuid = Uuid();
   String id;
   String description;
   bool isCompleted;
