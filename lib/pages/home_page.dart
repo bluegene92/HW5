@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import '../controllers/auth_controller.dart';
 import '../controllers/task_controller.dart';
 import '../model/task.dart';
+import 'opening_page.dart';
 
 //       Class: Mobile Application Development
 //        Name: Dat Tran
@@ -81,8 +82,10 @@ class _HomePageState extends State<HomePage> {
             child: Column(children: [
               ListTile(
                 title: const Text('Sign out'),
-                onTap: () {
+                onTap: () async {
                   AuthController().signOut();
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (context) => const OpeningPage()));
                 },
               )
             ]),

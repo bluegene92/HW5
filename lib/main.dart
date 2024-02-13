@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:hw4/controllers/auth_controller.dart';
 import 'package:hw4/firebase_options.dart';
 import 'package:hw4/pages/opening_page.dart';
 import 'pages/home_page.dart';
@@ -22,11 +23,10 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   var selectedIndex = 0;
-  final _auth = Auth();
 
   @override
   Widget build(BuildContext context) {
-    String? userId = _auth.userId;
+    String? userId = AuthController().userId;
 
     if (userId != null) {
       print(userId);

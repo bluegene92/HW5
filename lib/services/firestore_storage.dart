@@ -6,6 +6,7 @@ import '../model/task.dart';
 import 'storage.dart';
 
 class FirestoreStorage implements Storage {
+  static const _users = 'users';
   static const _tasks = 'tasks';
   static const _description = 'description';
   static const _dueDate = 'dueDate';
