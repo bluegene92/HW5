@@ -12,13 +12,21 @@ class FirestoreStorage implements Storage {
   static const _description = 'description';
   static const _dueDate = 'dueDate';
 
+  final _db = FirebaseFirestore.instance;
   final _auth = AuthController();
+  final _userId = AuthController().userId;
 
   @override
   Future<void> initialize() => Future.value();
 
   @override
   Stream<List<Task>> getTasks() {
+    if (_userId == null) {
+      final controller = StreamController<List<Task>>();
+      controller.close();
+      return controller.stream;
+    }
+
     return FirebaseFirestore.instance
         .collection(_users)
         .doc(_auth.userId)
