@@ -1,7 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hw4/firebase_options.dart';
+import 'package:hw4/pages/opening_page.dart';
 import 'pages/home_page.dart';
+import 'services/auth.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,9 +22,19 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   var selectedIndex = 0;
+  final _auth = Auth();
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(title: 'Flutter Demo', home: HomePage());
+    String? userId = _auth.userId;
+
+    if (userId != null) {
+      print(userId);
+      print('logged in');
+      return const MaterialApp(title: 'Flutter HW7', home: HomePage());
+    } else {
+      print('Not logged in');
+      return const MaterialApp(title: 'Flutter HW7', home: OpeningPage());
+    }
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hw4/pages/new_task_page.dart';
 import 'package:intl/intl.dart';
+import '../controllers/auth_controller.dart';
 import '../controllers/task_controller.dart';
 import '../model/task.dart';
 
@@ -75,6 +76,17 @@ class _HomePageState extends State<HomePage> {
             separatorBuilder: (_, __) => const Divider(),
             itemCount: tasks.length,
           ),
+          drawer: Drawer(
+              child: SafeArea(
+            child: Column(children: [
+              ListTile(
+                title: const Text('Sign out'),
+                onTap: () {
+                  AuthController().signOut();
+                },
+              )
+            ]),
+          )),
           floatingActionButton: FloatingActionButton(
               backgroundColor: Colors.blue,
               onPressed: () async {
