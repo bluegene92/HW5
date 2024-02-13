@@ -25,12 +25,18 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    String? userId = AuthController().userId;
+    final stream = AuthController().loggedInStream;
 
-    if (userId != null) {
-      return const MaterialApp(title: 'Flutter HW7', home: HomePage());
-    } else {
-      return const MaterialApp(title: 'Flutter HW7', home: OpeningPage());
-    }
+    return MaterialApp(
+        title: 'Flutter HW7',
+        home: StreamBuilder(
+            stream: stream,
+            builder: (context, snapshot) {
+              if (snapshot.hasData && snapshot.data == true) {
+                return const HomePage();
+              }
+
+              return const OpeningPage();
+            }));
   }
 }
