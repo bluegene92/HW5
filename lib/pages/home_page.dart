@@ -14,7 +14,7 @@ import 'opening_page.dart';
 //         Due: Feb 22, 2024
 
 // Estimate Completion time: 4 Hours
-// Actual Completition time: 6 Hours
+// Actual Completition time: 5 Hours
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
