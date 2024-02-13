@@ -49,13 +49,11 @@ class FirestoreStorage implements Storage {
 
   @override
   Future<void> insertTask(Task task) {
+    if (_userId == null) return Future.value();
+
     Timestamp? dueDateTimeStamp;
     if (task.dueDate != null) {
       dueDateTimeStamp = Timestamp.fromDate(task.dueDate!);
-    }
-
-    if (_auth.userId == null) {
-      throw Exception('User is not logged in');
     }
 
     return _db
@@ -67,6 +65,8 @@ class FirestoreStorage implements Storage {
 
   @override
   Future<void> removeTask(Task task) {
+    if (_userId == null) return Future.value();
+
     return _db
         .collection(_users)
         .doc(_auth.userId)
