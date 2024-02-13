@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../controllers/auth_controller.dart';
 import '../utils/string_validator.dart';
+import 'home_page.dart';
 
 class CreateAccountPage extends StatefulWidget {
   const CreateAccountPage({super.key});
@@ -48,6 +49,15 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                   var error = await AuthController().createAccount(
                       email: _emailController.text,
                       password: _pwController.text);
+
+                  if (!mounted) return;
+
+                  if (error == null) {
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const HomePage()));
+                  }
 
                   if (error != null) {
                     setState(() {

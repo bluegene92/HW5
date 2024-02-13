@@ -31,7 +31,6 @@ class Auth {
 
   void signOut() async {
     await _auth.signOut();
-    print('sign out ${userId}');
   }
 
   String _parseSignInAuthException(FirebaseAuthException exception) {

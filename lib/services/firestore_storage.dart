@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../controllers/auth_controller.dart';
 import '../model/task.dart';
 import 'storage.dart';
 
@@ -11,12 +12,16 @@ class FirestoreStorage implements Storage {
   static const _description = 'description';
   static const _dueDate = 'dueDate';
 
+  final _auth = AuthController();
+
   @override
   Future<void> initialize() => Future.value();
 
   @override
   Stream<List<Task>> getTasks() {
     return FirebaseFirestore.instance
+        .collection(_users)
+        .doc(_auth.userId)
         .collection(_tasks)
         .snapshots()
         .map((snapshot) {
@@ -27,8 +32,6 @@ class FirestoreStorage implements Storage {
         if (data[_dueDate] != null) {
           dueDate = data[_dueDate].toDate() as DateTime;
         }
-
-        // print("data ${doc.id} ${data}");
 
         return Task(
             id: doc.id, description: data[_description], dueDate: dueDate);
@@ -43,13 +46,24 @@ class FirestoreStorage implements Storage {
       dueDateTimeStamp = Timestamp.fromDate(task.dueDate!);
     }
 
+    if (_auth.userId == null) {
+      throw Exception('User is not logged in');
+    }
+
     return FirebaseFirestore.instance
+        .collection(_users)
+        .doc(_auth.userId)
         .collection(_tasks)
         .add({_description: task.description, _dueDate: dueDateTimeStamp});
   }
 
   @override
   Future<void> removeTask(Task task) {
-    return FirebaseFirestore.instance.collection(_tasks).doc(task.id).delete();
+    return FirebaseFirestore.instance
+        .collection(_users)
+        .doc(_auth.userId)
+        .collection(_tasks)
+        .doc(task.id)
+        .delete();
   }
 }

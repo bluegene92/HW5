@@ -80,6 +80,7 @@ class _HomePageState extends State<HomePage> {
           drawer: Drawer(
               child: SafeArea(
             child: Column(children: [
+              Text("User ID: ${AuthController().userId}"),
               ListTile(
                 title: const Text('Sign out'),
                 onTap: () async {

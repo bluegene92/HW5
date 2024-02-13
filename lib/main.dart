@@ -4,7 +4,6 @@ import 'package:hw4/controllers/auth_controller.dart';
 import 'package:hw4/firebase_options.dart';
 import 'package:hw4/pages/opening_page.dart';
 import 'pages/home_page.dart';
-import 'services/auth.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,11 +28,8 @@ class _MyAppState extends State<MyApp> {
     String? userId = AuthController().userId;
 
     if (userId != null) {
-      print(userId);
-      print('logged in');
       return const MaterialApp(title: 'Flutter HW7', home: HomePage());
     } else {
-      print('Not logged in');
       return const MaterialApp(title: 'Flutter HW7', home: OpeningPage());
     }
   }
