@@ -27,7 +27,7 @@ class FirestoreStorage implements Storage {
       return controller.stream;
     }
 
-    return FirebaseFirestore.instance
+    return _db
         .collection(_users)
         .doc(_auth.userId)
         .collection(_tasks)
@@ -58,7 +58,7 @@ class FirestoreStorage implements Storage {
       throw Exception('User is not logged in');
     }
 
-    return FirebaseFirestore.instance
+    return _db
         .collection(_users)
         .doc(_auth.userId)
         .collection(_tasks)
@@ -67,7 +67,7 @@ class FirestoreStorage implements Storage {
 
   @override
   Future<void> removeTask(Task task) {
-    return FirebaseFirestore.instance
+    return _db
         .collection(_users)
         .doc(_auth.userId)
         .collection(_tasks)
