@@ -29,9 +29,11 @@ class _MyAppState extends State<MyApp> {
 
     return MaterialApp(
         title: 'Todo',
+        themeMode: ThemeMode.dark,
         theme: ThemeData.light(),
-        darkTheme:
-            ThemeData(brightness: Brightness.dark, primaryColor: Colors.black),
+        darkTheme: ThemeData.dark().copyWith(
+            brightness: Brightness.dark,
+            primaryColor: const Color.fromARGB(255, 2, 5, 58)),
         home: StreamBuilder(
             stream: stream,
             builder: (context, snapshot) {

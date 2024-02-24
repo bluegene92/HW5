@@ -47,7 +47,7 @@ class _HomePageState extends State<HomePage> {
           loaded = true;
         }
 
-        List<Widget> actions = [ProfilePicture()];
+        List<Widget> actions = [];
 
         if (tasks.any((task) => task.isCompleted)) {
           actions.add(IconButton(
@@ -66,6 +66,7 @@ class _HomePageState extends State<HomePage> {
               },
               icon: const Icon(Icons.delete)));
         }
+        actions.add(const ProfilePicture());
 
         return Scaffold(
           appBar: AppBar(
