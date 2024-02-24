@@ -28,7 +28,10 @@ class _MyAppState extends State<MyApp> {
     final stream = AuthController().loggedInStream;
 
     return MaterialApp(
-        title: 'Flutter HW7',
+        title: 'Todo',
+        theme: ThemeData.light(),
+        darkTheme:
+            ThemeData(brightness: Brightness.dark, primaryColor: Colors.black),
         home: StreamBuilder(
             stream: stream,
             builder: (context, snapshot) {

@@ -126,7 +126,11 @@ class _HomePageState extends State<HomePage> {
     return CheckboxListTile(
         checkColor: Colors.white,
         activeColor: Colors.blue,
-        title: Text(task.description),
+        title: Text(task.description,
+            style: const TextStyle(
+                fontFamily: 'PokemonClassic',
+                fontSize: 20,
+                fontWeight: FontWeight.bold)),
         subtitle: dueDate,
         value: task.isCompleted,
         onChanged: (bool? value) {
