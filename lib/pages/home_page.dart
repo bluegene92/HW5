@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hw4/pages/new_task_page.dart';
+import 'package:hw4/widgets/profile_picture.dart';
 import 'package:intl/intl.dart';
 import '../controllers/auth_controller.dart';
 import '../controllers/task_controller.dart';
@@ -8,13 +9,13 @@ import 'opening_page.dart';
 
 //       Class: Mobile Application Development
 //        Name: Dat Tran
-//        Date: Feb 11, 2024
-//    Homework: Week 6
+//        Date: Feb 24, 2024
+//    Homework: Week 8
 //      Points: 100 pts
-//         Due: Feb 22, 2024
+//         Due: March 8, 2024
 
-// Estimate Completion time: 4 Hours
-// Actual Completition time: 5 Hours
+// Estimate Completion time: 3 Hours
+// Actual Completition time: 3 Hours
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -46,7 +47,8 @@ class _HomePageState extends State<HomePage> {
           loaded = true;
         }
 
-        List<Widget> actions = [];
+        List<Widget> actions = [ProfilePicture()];
+
         if (tasks.any((task) => task.isCompleted)) {
           actions.add(IconButton(
               onPressed: () async {
@@ -128,9 +130,9 @@ class _HomePageState extends State<HomePage> {
         activeColor: Colors.blue,
         title: Text(task.description,
             style: const TextStyle(
-                fontFamily: 'PokemonClassic',
-                fontSize: 20,
-                fontWeight: FontWeight.bold)),
+              fontFamily: 'PokemonClassic',
+              fontSize: 20,
+            )),
         subtitle: dueDate,
         value: task.isCompleted,
         onChanged: (bool? value) {
